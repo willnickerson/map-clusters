@@ -16,6 +16,18 @@ const clusters = [
     lat: 20,
     lng: 25,
     count: 30
+  },
+  {
+    id: uuidV4(),
+    lat: 30,
+    lng: 120,
+    count: 50
+  },
+  {
+    id: uuidV4(),
+    lat: 45,
+    lng: -90,
+    count: 45
   }
 ]
 
