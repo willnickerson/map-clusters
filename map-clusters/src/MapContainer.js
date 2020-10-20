@@ -4,26 +4,44 @@ import { Map, InfoWindow, GoogleApiWrapper } from 'google-maps-react'
 import Clusters from './Clusters';
 
 class MapContainer extends Component {
-  state = {
-    selectedCluster: null,
-    activeMarker: null,
-    showingClusterWindow: false
+  constructor (props) {
+    super(props)
+    this.state = {
+      selectedCluster: null
+    }
   }
 
+  // ADD HANDLERS FOR MOUSE EVENTS
+
   render () {
-    const { clusters } = this.props
+    const { clusters, radiusFunction, weightFunction } = this.props
+    const { selectedCluster } = this.state
+    const showInfoWindow = clusters.length && selectedCluster
+
     return (
       <div>
-        <Map 
+        <Map
           google={this.props.google}
-          zoom={5}
+          zoom={3}
           initialCenter={{
             lat: 0,
             lng: 0
           }}
         >
-          {clusters.length && (<Clusters clusters={this.props.clusters} />)}
-          
+          {clusters.length && (
+            <Clusters
+              clusters={this.props.clusters}
+              radiusFunction={radiusFunction}
+              weightFunction={weightFunction}
+            />
+          )}
+          <InfoWindow
+            visible={showInfoWindow}
+            position={{
+              lat: 0,
+              lng: 0
+            }}
+          />
         </Map>
       </div>
     );
@@ -40,9 +58,7 @@ MapContainer.propTypes = {
     count: PropTypes.number.isRequired,
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
-    handleClick: PropTypes.func.isRequired,
-    handleMouseover: PropTypes.func.isRequired,
-    handleMouseout: PropTypes.func.isRequired
-  }))
+  })).isRequired,
+  weightFunction: PropTypes.func.isRequired,
+  radiusFunction: PropTypes.func.isRequired
 }
-
