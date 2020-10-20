@@ -14,7 +14,7 @@ class MapContainer extends Component {
   // ADD HANDLERS FOR MOUSE EVENTS
 
   render () {
-    const { clusters, radiusFunction, weightFunction } = this.props
+    const { clusters, radiusFunction, weightFunction, initialCenterFunction } = this.props
     const { selectedCluster } = this.state
     const showInfoWindow = clusters.length && selectedCluster
 
@@ -23,7 +23,7 @@ class MapContainer extends Component {
         <Map
           google={this.props.google}
           zoom={3}
-          initialCenter={{
+          initialCenter={initialCenterFunction ? initialCenterFunction(clusters) : {
             lat: 0,
             lng: 0
           }}
@@ -52,6 +52,10 @@ export default GoogleApiWrapper({
   apiKey: 'AIzaSyCEXXIDml1oa5TM7teCeHNmBx-VeUg5ax0'
 })(MapContainer)
 
+MapContainer.defaultProps = {
+  initialCenterFunction: null
+}
+
 MapContainer.propTypes = {
   clusters: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -60,5 +64,6 @@ MapContainer.propTypes = {
     lng: PropTypes.number.isRequired,
   })).isRequired,
   weightFunction: PropTypes.func.isRequired,
-  radiusFunction: PropTypes.func.isRequired
+  radiusFunction: PropTypes.func.isRequired,
+  initialCenterFunction: PropTypes.func
 }

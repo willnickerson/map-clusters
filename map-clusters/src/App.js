@@ -43,6 +43,14 @@ function testRadiusFunction (count) {
   return NO_ZOOM_RADIUS * (count / largestCluster.count)
 }
 
+function testCenterFunction (clusters) {
+  const { lng, lat } = _.maxBy(clusters, cluster => cluster.count)
+  return {
+    lng,
+    lat
+  }
+}
+
 function App () {
   return (
     <div className='App'>
@@ -50,6 +58,7 @@ function App () {
         clusters={clusters}
         weightFunction={testWeightFunction}
         radiusFunction={testRadiusFunction}
+        initialCenterFunction={testCenterFunction}
       />
     </div>
   )
